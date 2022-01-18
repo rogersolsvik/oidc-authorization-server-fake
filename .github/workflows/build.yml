@@ -7,7 +7,7 @@ on:
     branches: [ main ]
     
 env:
-  IMAGE_NAME: "ghcr.io/${{ github.repository }}/oidc-authorization-server-fake"
+  IMAGE_NAME: "ghcr.io/${{ github.repository }}"
 jobs:
 
   build:
@@ -27,7 +27,7 @@ jobs:
     - name: Set outputs
       id: vars
       run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-    - name: Build and push API builder
+    - name: Build and push
       id: docker_build
       uses: docker/build-push-action@v2
       with:
