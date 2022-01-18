@@ -1,4 +1,5 @@
 """Route setup for well-known"""
+from logging import Logger
 from cryptography.hazmat.primitives import serialization
 from flask import Blueprint
 from flask.config import Config
@@ -8,9 +9,12 @@ from authlib.jose import JsonWebKey
 from keystore import KeyStore
 
 
-def create_routes(config: Config, keystore: KeyStore) -> Blueprint:
+def create_routes(config: Config, keystore: KeyStore, logger: Logger) -> Blueprint:
     """Register paths for well-known configuration"""
     blueprint = Blueprint("well-known", __name__, url_prefix="/.well-known")
+    logger.debug(
+        f"Setting up well-known routes using configured issuer: {config.get('OIDC_ISSUER')}"
+    )
     __jwk = JsonWebKey.import_key(
         keystore.public_key.public_bytes(
             encoding=serialization.Encoding.PEM,

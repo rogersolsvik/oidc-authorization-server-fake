@@ -1,3 +1,4 @@
+import logging
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
 from logging import Logger
@@ -6,12 +7,12 @@ from logging import Logger
 class KeyStore:
     __private_key: rsa.RSAPrivateKey
 
-    def __init__(self, logGeneratedKeys: bool = False, logger: Logger = None):
+    def __init__(self, logger: Logger):
+        logger.debug("Initializing KeyStore and generating key-pair")
         self.__private_key = rsa.generate_private_key(0x10001, 2048)
 
-        if logGeneratedKeys and logger is not None:
-            print(self.private_key_pem.decode("utf-8"))
-            print(self.public_key_pem.decode("utf-8"))
+        logger.debug(f"Private key (PEM):\n {self.private_key_pem.decode('UTF-8')}")
+        logger.debug(f"Public key (PEM):\n {self.public_key_pem.decode('UTF-8')}")
 
     @property
     def private_key(self):
